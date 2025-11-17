@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 interface Employee {
@@ -9,7 +9,7 @@ interface Employee {
 
 const Dashboard: React.FC = () => {
   const { token, logout } = useAuth();
-  const [employees, setEmployees] = React.useState<Employee[]>([
+  const [employees, setEmployees] = useState<Employee[]>([
     { id: 1, name: "John Doe", department: "HR" },
     { id: 2, name: "Jane Smith", department: "Engineering" },
   ]);
