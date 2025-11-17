@@ -16,8 +16,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (email: string, password: string) => {
-    // Example: simple mock login
-    if (email === "" && password === "") {
+    // Mock login logic
+    if (email === "admin@example.com" && password === "password") {
       setUser({ email });
       return;
     }
