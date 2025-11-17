@@ -1,47 +1,51 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "admin@example.com" && password === "password") {
-      login("dummy-token");
-      navigate("/dashboard");
-    } else {
-      setError("Invalid credentials");
+
+    if (email === "" || password === "") {
+      setError("Email and password required");
+      return;
     }
+
+    // Your token can come from backend, but for now use fake token
+    login("my-super-token");
+
+    navigate("/dashboard");
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Login</h1>
+    <div style={{ padding: 20 }}>
+      <h2>Login</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <form onSubmit={handleSubmit}>
         <input
-          type="email"
+          type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br />
+        /><br/><br/>
+
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
+        /><br/><br/>
+
         <button type="submit">Login</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
