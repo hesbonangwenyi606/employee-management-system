@@ -3,32 +3,23 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
+    "axios": "^1.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.0",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
-    "ajv": "^8.12.0",
-    "ajv-keywords": "^5.1.0",
-    "axios": "^1.13.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.30.2",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.9.5"
-=======
-    "axios": "^1.5.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.17.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.9.5",
-    "ajv": "^8.12.0",
-    "ajv-keywords": "^5.1.0"
->>>>>>> ef157e86be4eda8df158c6608ca1990d27843026
+    "@types/react-router-dom": "^5.3.3",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
-<<<<<<< HEAD
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -41,7 +32,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-=======
->>>>>>> ef157e86be4eda8df158c6608ca1990d27843026
   }
 }
+
