@@ -1,23 +1,36 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
 
 interface AuthContextType {
-  user: any;
-  login: (email: string, password: string) => Promise<any>;
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  // On mount, check if token exists
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    const userData = localStorage.getItem("userData");
+    if (token && userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -28,11 +41,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const data = await response.json();
 
-      // Save token and user
+      // Save token & user info
       localStorage.setItem("userToken", data.token);
+      localStorage.setItem("userData", JSON.stringify(data.user));
       setUser(data.user);
-
-      return data;
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -41,6 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     localStorage.removeItem("userToken");
+    localStorage.removeItem("userData");
     setUser(null);
   };
 
