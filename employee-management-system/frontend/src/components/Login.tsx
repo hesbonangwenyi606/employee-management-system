@@ -7,15 +7,15 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth(); // login(email: string, password: string)
+  const { signIn } = useAuth(); // ✅ now accepts 2 arguments
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // reset error
+    setError("");
     try {
-      await login(email, password); // ✅ now accepts 2 args
+      await signIn(email, password);
       navigate("/dashboard");
-    } catch (err) {
+    } catch {
       setError("Invalid credentials");
     }
   };
@@ -24,24 +24,14 @@ const Login: React.FC = () => {
     <form onSubmit={handleSubmit}>
       <div>
         <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
       <div>
         <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit">Login</button>
+      <button type="submit">Sign In</button>
     </form>
   );
 };
