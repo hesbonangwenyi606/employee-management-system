@@ -1,14 +1,21 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
-  const { token, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      <p>Logged in token: {token}</p>
-      <button onClick={logout}>Logout</button>
+      <h1>Dashboard</h1>
+      <p>Welcome, {user?.email}</p>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
