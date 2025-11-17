@@ -1,6 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
+  padding: 2rem;
 }
 
 input {
@@ -12,4 +13,17 @@ button {
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   cursor: pointer;
+}
+
+.login-container,
+.dashboard {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.error {
+  color: red;
 }
