@@ -1,44 +1,46 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-// Define the context type
-interface AuthContextType {
-  user: { email: string } | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
+interface User {
+  email: string;
 }
 
-// Create the context with proper default values
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  login: async (email: string, password: string) => false, // accepts 2 args
-  logout: () => {},
-});
+interface AuthContextType {
+  user: User | null;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signOut: () => void;
+}
 
-// AuthProvider component
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<{ email: string } | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-  const login = async (email: string, password: string) => {
-    // Here you can replace with real authentication logic
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  const signIn = async (email: string, password: string) => {
+    // Example: simple hardcoded login
     if (email === "admin@example.com" && password === "password") {
       setUser({ email });
-      return true;
+      return;
     }
     throw new Error("Invalid credentials");
   };
 
-  const logout = () => {
+  const signUp = async (email: string, password: string) => {
+    // Example: pretend we create a new user
+    setUser({ email });
+  };
+
+  const signOut = () => {
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the auth context
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
