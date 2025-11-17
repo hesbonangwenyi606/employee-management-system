@@ -10,23 +10,25 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "" || password === "") {
-      setError("Email and password required");
+    if (!email || !password) {
+      setError("Email and password are required");
       return;
     }
 
-    // Your token can come from backend, but for now use fake token
-    login("my-super-token");
+    // use a fake token for now
+    const fakeToken = "my-token-123";
+    login(fakeToken);
 
     navigate("/dashboard");
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div>
       <h2>Login</h2>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -35,15 +37,15 @@ const Login: React.FC = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        /><br/><br/>
-
+        />
+        <br />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        /><br/><br/>
-
+        />
+        <br />
         <button type="submit">Login</button>
       </form>
     </div>

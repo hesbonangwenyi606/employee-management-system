@@ -5,9 +5,9 @@ const Dashboard: React.FC = () => {
   const { token, logout } = useAuth();
 
   return (
-    <div style={{ padding: 20 }}>
+    <div>
       <h2>Dashboard</h2>
-      <p>Your token: {token}</p>
+      <p>Logged in token: {token}</p>
       <button onClick={logout}>Logout</button>
     </div>
   );
