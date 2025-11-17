@@ -6,7 +6,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>; // <-- two args
   logout: () => void;
 }
 
@@ -16,7 +16,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (email: string, password: string) => {
-    // Mock login logic
+    // Example login logic (replace with real API)
     if (email === "admin@example.com" && password === "password") {
       setUser({ email });
       return;
@@ -24,9 +24,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     throw new Error("Invalid credentials");
   };
 
-  const logout = () => {
-    setUser(null);
-  };
+  const logout = () => setUser(null);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
