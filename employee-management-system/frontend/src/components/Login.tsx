@@ -1,55 +1,37 @@
-import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useState } from "react";
 
-const Login: React.FC = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
+interface AuthContextType {
+  user: any;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+}
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  login: async () => false,
+  logout: () => {},
+});
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<any>(null);
 
-    if (!email || !password) {
-      setError("Email and password are required");
-      return;
+  const login = async (email: string, password: string) => {
+    if (email === "admin@example.com" && password === "password") {
+      setUser({ email });
+      return true;
     }
+    throw new Error("Invalid credentials");
+  };
 
-    // use a fake token for now
-    const fakeToken = "my-token-123";
-    login(fakeToken);
-
-    navigate("/dashboard");
+  const logout = () => {
+    setUser(null);
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-export default Login;
+export const useAuth = () => useContext(AuthContext);
