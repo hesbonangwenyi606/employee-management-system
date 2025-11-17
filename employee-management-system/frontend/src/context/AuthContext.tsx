@@ -6,7 +6,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>; // <-- two args
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -16,7 +16,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (email: string, password: string) => {
-    // Example login logic (replace with real API)
+    // Dummy login (replace with real API)
     if (email === "admin@example.com" && password === "password") {
       setUser({ email });
       return;
@@ -35,6 +35,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
