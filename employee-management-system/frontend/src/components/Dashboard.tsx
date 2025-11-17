@@ -3,9 +3,15 @@ import { useAuth } from "../context/AuthContext";
 import api, { setToken } from "../api/api";
 import EmployeeList from "./EmployeeList";
 
+interface Employee {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 const Dashboard: React.FC = () => {
   const { token, logout } = useAuth();
-  const [employees, setEmployees] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   useEffect(() => {
     setToken(token);
@@ -15,7 +21,7 @@ const Dashboard: React.FC = () => {
   }, [token]);
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="dashboard">
       <h2>Dashboard</h2>
       <button onClick={logout}>Logout</button>
       <EmployeeList employees={employees} />
