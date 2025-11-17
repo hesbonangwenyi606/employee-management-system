@@ -1,30 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
-import api, { setToken } from "../api/api";
-import EmployeeList from "./EmployeeList";
 
 interface Employee {
-  _id: string;
+  id: number;
   name: string;
-  email: string;
+  department: string;
 }
 
 const Dashboard: React.FC = () => {
   const { token, logout } = useAuth();
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = React.useState<Employee[]>([
+    { id: 1, name: "John Doe", department: "HR" },
+    { id: 2, name: "Jane Smith", department: "Engineering" },
+  ]);
 
-  useEffect(() => {
-    setToken(token);
-    api.get("/employees")
-      .then(res => setEmployees(res.data))
-      .catch(err => console.error(err));
-  }, [token]);
+  if (!token) return <p>Not authorized</p>;
 
   return (
-    <div className="dashboard">
-      <h2>Dashboard</h2>
+    <div style={{ padding: "2rem" }}>
+      <h1>Dashboard</h1>
       <button onClick={logout}>Logout</button>
-      <EmployeeList employees={employees} />
+      <h2>Employees</h2>
+      <ul>
+        {employees.map((emp) => (
+          <li key={emp.id}>
+            {emp.name} - {emp.department}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
