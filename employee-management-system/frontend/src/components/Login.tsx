@@ -6,33 +6,51 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const { signIn } = useAuth(); // ✅ now accepts 2 arguments
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const { login, signUp } = useAuth(); // ✅ Now includes signUp
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     try {
-      await signIn(email, password);
+      await login(email, password); // ✅ matches AuthContext
       navigate("/dashboard");
-    } catch {
+    } catch (err) {
       setError("Invalid credentials");
     }
   };
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signUp(email, password);
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Sign up failed");
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      </div>
+    <div>
+      <h1>Login</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit">Sign In</button>
-    </form>
+      <form>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={handleSignUp}>Sign Up</button>
+      </form>
+    </div>
   );
 };
 

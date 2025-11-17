@@ -1,23 +1,24 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
+// User type (you can extend this later)
 interface User {
   email: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
-  signOut: () => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const signIn = async (email: string, password: string) => {
-    // Example: simple hardcoded login
+  // Fake login function
+  const login = async (email: string, password: string) => {
     if (email === "admin@example.com" && password === "password") {
       setUser({ email });
       return;
@@ -25,22 +26,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     throw new Error("Invalid credentials");
   };
 
+  // Fake signUp function
   const signUp = async (email: string, password: string) => {
-    // Example: pretend we create a new user
+    // In real app, you'd call API here
     setUser({ email });
   };
 
-  const signOut = () => {
-    setUser(null);
-  };
+  const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, login, signUp, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Custom hook to use AuthContext
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
