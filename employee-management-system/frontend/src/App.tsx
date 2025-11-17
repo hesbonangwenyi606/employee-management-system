@@ -1,24 +1,13 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
-import { useAuth } from "./context/AuthContext";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { AuthProvider } from "./context/AuthContext"; // ✅ make sure path is correct
 
-const App: React.FC = () => {
-  const { token } = useAuth();
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={token ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route path="*" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+root.render(
+  <React.StrictMode>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </React.StrictMode>
+);
