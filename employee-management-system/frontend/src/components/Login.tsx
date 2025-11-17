@@ -1,37 +1,65 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-interface AuthContextType {
-  user: any;
-  login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
-}
+const Login: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  login: async () => false,
-  logout: () => {},
-});
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-  const login = async (email: string, password: string) => {
-    if (email === "admin@example.com" && password === "password") {
-      setUser({ email });
-      return true;
+    try {
+      const success = await login(email, password);
+      if (success) {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError("Invalid email or password");
     }
-    throw new Error("Invalid credentials");
-  };
-
-  const logout = () => {
-    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
+      <h2>Login</h2>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div style={{ marginTop: "10px" }}>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{ marginTop: "15px", width: "100%" }}
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default Login;
