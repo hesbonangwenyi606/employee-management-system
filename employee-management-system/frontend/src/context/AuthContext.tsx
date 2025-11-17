@@ -7,10 +7,8 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// Create context with undefined default
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Correctly type children
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -35,7 +33,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return <AuthContext.Provider value={{ token, login, logout }}>{children}</AuthContext.Provider>;
 };
 
-// Custom hook
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("us
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+};

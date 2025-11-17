@@ -9,6 +9,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
+<<<<<<< HEAD
+=======
+    "ajv": "6.12.6",
+    "ajv-keywords": "3.5.2",
+>>>>>>> 913b56f5 (completed)
     "typescript": "^4.9.5"
   },
   "devDependencies": {
